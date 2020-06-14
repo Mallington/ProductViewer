@@ -18,30 +18,17 @@ THREE.Object3D.prototype.updateMatrix = function () {
 
 class CardObject extends THREE.Group {
   //Generate a mesh for each render mode and adds it to a list
-  constructor(scene, width, height, thickness, pageRatio) {
+  constructor(scene, width, height, thickness, pageRatio, envMap) {
     super();
     this.width = width;
     this.height = height;
     this.thickness = thickness;
-    this.buildPieces(this, pageRatio);
+    this.buildPieces(this, pageRatio, envMap);
   }
 
-  buildPieces(group, pageRatio) {
-    /*var material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      emissive: 0x444444,
-    });*/
-    var image = new new THREE.TextureLoader().load("conserv.jpg");
-
-    var material = new THREE.MeshBasicMaterial({
-      map: image,
-      overdraw: 0.5,
-    });
-
-    var material2 = new THREE.MeshPhongMaterial({
-      color: 0x001f,
-      emissive: 0x444444,
-    });
+  buildPieces(group, pageRatio, map) {
+    console.log(map);
+    var material = new THREE.MeshBasicMaterial({ color: 0x111111, envMap: map });
 
     this.front = new THREE.Mesh(
       new THREE.BoxGeometry(this.width, this.height, this.thickness * pageRatio, 4, 4, 1),
@@ -64,7 +51,7 @@ class CardObject extends THREE.Group {
     group.add(backGroup, frontGroup);
   }
 
-  setOpenAngle(angle) {
+  openEvenly(angle) {
     this.front.rotation.y = -angle;
     this.back.rotation.y = angle;
   }
@@ -73,6 +60,4 @@ class CardObject extends THREE.Group {
     this.children = [];
     this.buildPieces(this, pageRatio);
   }
-
-  update() { }
 }
