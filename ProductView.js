@@ -96,9 +96,12 @@ function init() {
 
     scene.background = envTexture;
     var anonymous = '{"scale":{"x":5,"y":5,"z":5},"position":{"x":100.24019505512533,"y":38,"z":57.03019959486946},"rotation":{"_x":-1.5707963267948966,"_y":0,"_z":-1.9234240736264039,"_order":"XYZ"},"width":1.5,"height":2,"thickness":0.3}';
-    card = new CardObject(anonymous, envTexture);
-    card.scale.set(5, 5, 5)
+    card = new CardObject(1.5, 2, 0.3, 0.03, envTexture);
     scene.add(card);
+    card.scale.set(5, 5, 5);
+    card.position.set(100.24019505512533, 38, 57.03019959486946);
+    card.rotation.set(-1.5707963267948966, 0, -1.9234240736264039)
+
 
     //loadeTexturedModel('models/room', scene);
     loadGLTF('scenes/office_interior/scene.gltf', scene);

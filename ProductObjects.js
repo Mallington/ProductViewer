@@ -16,6 +16,8 @@ THREE.Object3D.prototype.updateMatrix = function () {
   this.matrixWorldNeedsUpdate = true;
 };
 
+
+
 class CardObject extends THREE.Group {
   //Generate a mesh for each render mode and adds it to a list
   constructor(width, height, thickness, pageRatio, enviroment) {
@@ -26,9 +28,9 @@ class CardObject extends THREE.Group {
     this.buildPieces(this, pageRatio, enviroment);
   }
 
-  constructor(anonymous, enviroment) {
+  /*constructor(anonymous, enviroment) {
     super();
-
+    anonymous = (ty)
     this.width = (cardObj.width === undefined) ? this.rotation : cardObj.width;
     this.height = (cardObj.height === undefined) ? this.rotation : cardObj.height;
     thus.thickness = (cardObj.thickness === undefined) ? this.rotation : cardObj.thickness;
@@ -38,7 +40,7 @@ class CardObject extends THREE.Group {
     this.scale = (cardObj.scale === undefined) ? this.rotation : cardObj.scale;
     this.position = (cardObj.position === undefined) ? this.rotation : cardObj.position;
     this.rotation = (cardObj.rotation === undefined) ? this.rotation : cardObj.rotation;
-  }
+  } */
 
   jsonifyCard(cardObj) {
     var anonymous = {
