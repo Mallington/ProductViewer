@@ -104,7 +104,7 @@ function init() {
 
 
     //loadeTexturedModel('models/room', scene);
-    loadGLTF('scenes/office_interior/scene.gltf', scene);
+    loadGLTF('~/scenes/office_interior/scene.gltf', scene);
     helper(scene, card);
 
     /*new THREE.CubeTextureLoader()

@@ -1,0 +1,2 @@
+#/bin/bash
+rm -fr /Users/mathew/Documents/GitHub/CoverPortal7/BorePortal/wwwroot/ProductViewer/*; sudo cp -R /Users/mathew/Documents/GitHub/ProductViewer/. /Users/mathew/Documents/GitHub/CoverPortal7/BorePortal/wwwroot/ProductViewer
