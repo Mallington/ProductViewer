@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   </head>
   <body>
-    <canvas width="1000px" height="1000px" id="maincanvas"></canvas>
-    <h1>Hello test</h1>
+    <canvas width="1000px" height="500px" id="maincanvas"></canvas>
     <!-- <script src="scripts/three.js"></script>
     <script src="scripts/MTLLoader.js"></script>
     <script src="scripts/OBJLoader.js"></script>
@@ -14,10 +13,14 @@
     <script src="scripts/OrbitControls.js"></script>
     <script src="viewer/ProductObjects.js"></script>
     <script type="module" src="viewer/ProductView.js"></script> -->
-    <script type="module">
-      //import ProductViewer from "./viewer/ProductView.js";
-      import ProductViewer from "./build/viewer.js";
+    <input type="range" id="bookSlider" min="180" max="360" oninput="updateOpening(this.value);" />
+    <script src="./build/viewer.js"></script>
+    <script>
       var viewer = new ProductViewer(document.getElementById("maincanvas"));
+      function updateOpening(val) {
+        var rad = (val / 180) * Math.PI;
+        viewer.card.front.rotation.y = rad;
+      }
     </script>
   </body>
 </html>
