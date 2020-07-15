@@ -3,26 +3,21 @@
     <title>Product Viewer</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      canvas {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
   </head>
   <body>
+    <canvas width="1000px" height="1000px" id="maincanvas"></canvas>
     <h1>Hello test</h1>
-    <script src="three.js"></script>
-    <script src="VRButton.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script src="MTLLoader.js"></script>
-    <script src="OBJLoader.js"></script>
-    <script src="GLTFLoader.js"></script>
-    <script src="ProductObjects.js"></script>
-    <script src="ProductView.js"></script>
+    <!-- <script src="scripts/three.js"></script>
+    <script src="scripts/MTLLoader.js"></script>
+    <script src="scripts/OBJLoader.js"></script>
+    <script src="scripts/GLTFLoader.js"></script>
+    <script src="scripts/OrbitControls.js"></script>
+    <script src="viewer/ProductObjects.js"></script>
+    <script type="module" src="viewer/ProductView.js"></script> -->
+    <script type="module">
+      //import ProductViewer from "./viewer/ProductView.js";
+      import ProductViewer from "./build/viewer.js";
+      var viewer = new ProductViewer(document.getElementById("maincanvas"));
+    </script>
   </body>
 </html>
