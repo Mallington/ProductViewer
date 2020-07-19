@@ -29,7 +29,7 @@ class ProductViewer extends THREE.Scene {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 
-        var r = 'https://threejs.org/examples/textures/cube/Bridge2/';
+        /*var r = 'https://threejs.org/examples/textures/cube/Bridge2/';
         var urls = [r + 'posx.jpg', r + 'negx.jpg',
         r + 'posy.jpg', r + 'negy.jpg',
         r + 'posz.jpg', r + 'negz.jpg'];
@@ -37,21 +37,21 @@ class ProductViewer extends THREE.Scene {
         var envTexture = new THREE.CubeTextureLoader().load(urls);
 
         this.background = envTexture;
-        this.card = new CardObject(1.5, 2, 0.3, 0.03, envTexture);
-        this.add(this.card);
-        this.card.scale.set(5, 5, 5);
-        this.card.position.set(100.24019505512533, 38, 57.03019959486946);
-        this.card.rotation.set(-1.5707963267948966, 0, -1.9234240736264039)
 
-        loadGLTF('/scenes/office_interior/scene.gltf', this);
+        loadGLTF('/scenes/office_interior/scene.gltf', this); */
 
         this.controls = createControls(this.camera, this.renderer);
-        this.controls.target = this.card.position;
+
     }
     animate() {
         this.controls.update();
         requestAnimationFrame(this.animate);
         this.renderer.render(this, this.camera);
         this.lastUpdate = Date.now();
+    }
+
+    addCard(card) {
+        this.controls.target = card.position;
+        this.add(card);
     }
 }

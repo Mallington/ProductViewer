@@ -57415,27 +57415,15 @@ THREE.Object3D.prototype.updateMatrix = function () {
 
 class CardObject extends THREE.Group {
   //Generate a mesh for each render mode and adds it to a list
-  constructor(width, height, thickness, pageRatio, enviroment) {
+  constructor(width, height, thickness, pageRatio, texture, enviroment) {
     super();
     this.width = width;
     this.height = height;
     this.thickness = thickness;
-    this.buildPieces(this, pageRatio, enviroment);
+    this.enviroment = enviroment;
+    this.texture = texture;
+    this.buildPieces(this, pageRatio, enviroment, texture);
   }
-
-  /*constructor(anonymous, enviroment) {
-    super();
-    anonymous = (ty)
-    this.width = (cardObj.width === undefined) ? this.rotation : cardObj.width;
-    this.height = (cardObj.height === undefined) ? this.rotation : cardObj.height;
-    thus.thickness = (cardObj.thickness === undefined) ? this.rotation : cardObj.thickness;
-
-    this.buildPieces(this, pageRatio, enviroment);
-
-    this.scale = (cardObj.scale === undefined) ? this.rotation : cardObj.scale;
-    this.position = (cardObj.position === undefined) ? this.rotation : cardObj.position;
-    this.rotation = (cardObj.rotation === undefined) ? this.rotation : cardObj.rotation;
-  } */
 
   jsonifyCard(cardObj) {
     var anonymous = {
@@ -57449,26 +57437,38 @@ class CardObject extends THREE.Group {
     return JSON.stringify(anonymous)
   }
 
-  buildPieces(group, pageRatio, enviroment) {
-    var loader = new THREE.TextureLoader();
-    var bookMaterial = [
-      loader.load('book/pz.png'),
-      loader.load('book/nz.png'),
-      loader.load('book/pz.png'),
-      loader.load('book/pz.png'),
-      loader.load('book/nx.png'),
-      loader.load('book/px.png'),
-    ];
-    console.log(bookMaterial);
-    bookMaterial.map
-    var material = bookMaterial.map((side) => new THREE.MeshLambertMaterial({ color: 0xffffff, envMap: enviroment, map: side, combine: THREE.MixOperation, reflectivity: 0.1 }));
+  loadTextures(dict, loader, enviroment) {
+    var ret = dict.map((texture) => (texture != null) ? loader.load(texture) : null);
+    ret = ret.map((side) => new THREE.MeshLambertMaterial({ color: 0xffffff, envMap: enviroment, map: side, combine: THREE.MixOperation, reflectivity: 0.1 }));
+    return ret;
+  }
 
-    console.log(material);
-    //var bookMaterial = new THREE.MeshLambertMaterial({ color: 0xff6600, envMap: enviroment, combine: THREE.MixOperation, reflectivity: 0.01 });
+  buildPieces(group, pageRatio, enviroment, texture) {
+    var loader = new THREE.TextureLoader();
+
+    var frontDict = [
+      texture["pagesRight"],
+      texture["binding"],
+      texture["pagesTop"],
+      texture["pagesBottom"],
+      texture["frontCover"],
+      texture["leftInsidePage"],
+    ];
+    var frontMaterial = this.loadTextures(frontDict, loader, enviroment);
+
+    var backDict = [
+      texture["pagesRight"],
+      texture["binding"],
+      texture["pagesTop"],
+      texture["pagesBottom"],
+      texture["rightInsidePage"],
+      texture["backCover"],
+    ];
+    var backMaterial = this.loadTextures(backDict, loader, enviroment);
 
     this.front = new THREE.Mesh(
       new THREE.BoxGeometry(this.width, this.height, this.thickness * pageRatio, 4, 4, 1),
-      material
+      frontMaterial
     );
     this.front.pivot = new THREE.Vector3(-this.width / 2, 0, -(this.thickness * pageRatio) / 2);
     var frontGroup = new THREE.Group();
@@ -57477,7 +57477,7 @@ class CardObject extends THREE.Group {
 
     this.back = new THREE.Mesh(
       new THREE.BoxGeometry(this.width, this.height, this.thickness * (1 - pageRatio), 4, 4, 1),
-      material
+      backMaterial
     );
     this.back.pivot = new THREE.Vector3(-this.width / 2, 0, (this.thickness * (1 - pageRatio)) / 2);
     var backGroup = new THREE.Group();
@@ -57494,7 +57494,11 @@ class CardObject extends THREE.Group {
 
   setRatio(pageRatio) {
     this.children = [];
-    this.buildPieces(this, pageRatio);
+    var frontR = this.front.y;
+    var backR = this.back.rotation;
+    this.buildPieces(this, pageRatio, this.enviroment, this.texture);
+
+    //this.front.y = frontR;
   }
 }
 class ProductViewer extends THREE.Scene {
@@ -57528,7 +57532,7 @@ class ProductViewer extends THREE.Scene {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 
-        var r = 'https://threejs.org/examples/textures/cube/Bridge2/';
+        /*var r = 'https://threejs.org/examples/textures/cube/Bridge2/';
         var urls = [r + 'posx.jpg', r + 'negx.jpg',
         r + 'posy.jpg', r + 'negy.jpg',
         r + 'posz.jpg', r + 'negz.jpg'];
@@ -57536,22 +57540,22 @@ class ProductViewer extends THREE.Scene {
         var envTexture = new THREE.CubeTextureLoader().load(urls);
 
         this.background = envTexture;
-        this.card = new CardObject(1.5, 2, 0.3, 0.03, envTexture);
-        this.add(this.card);
-        this.card.scale.set(5, 5, 5);
-        this.card.position.set(100.24019505512533, 38, 57.03019959486946);
-        this.card.rotation.set(-1.5707963267948966, 0, -1.9234240736264039)
 
-        loadGLTF('/scenes/office_interior/scene.gltf', this);
+        loadGLTF('/scenes/office_interior/scene.gltf', this); */
 
         this.controls = createControls(this.camera, this.renderer);
-        this.controls.target = this.card.position;
+
     }
     animate() {
         this.controls.update();
         requestAnimationFrame(this.animate);
         this.renderer.render(this, this.camera);
         this.lastUpdate = Date.now();
+    }
+
+    addCard(card) {
+        this.controls.target = card.position;
+        this.add(card);
     }
 }function createControls(camera, renderer) {
 
