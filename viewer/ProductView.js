@@ -8,6 +8,7 @@ class ProductViewer extends THREE.Scene {
         this.lastUpdate = Date.now()
         this.init();
         this.animate = this.animate.bind(this);
+        this.update = true;
         this.animate();
     }
     init() {
@@ -41,12 +42,21 @@ class ProductViewer extends THREE.Scene {
         loadGLTF('/scenes/office_interior/scene.gltf', this); */
 
         this.controls = createControls(this.camera, this.renderer);
+        var temp = this.controls.update;
+        this.controls.update = () => { temp(); this.update = true; };
 
+        this.update = true;
     }
     animate() {
-        this.controls.update();
+        //this.controls.update();
         requestAnimationFrame(this.animate);
-        this.renderer.render(this, this.camera);
+
+        if (this.update) {
+            this.renderer.render(this, this.camera);
+            console.log("r");
+            this.update = false;
+        }
+
         this.lastUpdate = Date.now();
     }
 

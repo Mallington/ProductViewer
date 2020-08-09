@@ -12,7 +12,15 @@
     <script>
       var viewer = new ProductViewer(document.getElementById("maincanvas"));
 
-      var textureMap = { frontCover: "book/nx.png", binding: "book/nz.png", backCover: "book/px.png" };
+      var textureMap = {
+        frontCover: "book/nx.png",
+        binding: "book/nz.png",
+        backCover: "book/px.png",
+        pagesRight: "book/pz.png",
+        pagesTop: "book/pz.png",
+        pagesBottom: "book/pz.png",
+        rightInsidePage: "book/text.png",
+      };
 
       var card = new CardObject(1.5, 2, 0.3, 0.03, textureMap, null);
       viewer.addCard(card);
@@ -21,9 +29,11 @@
       function updateOpening(val) {
         var rad = (val / 180) * Math.PI;
         card.front.rotation.y = rad;
+        viewer.update = true;
       }
       function updateRatio(val) {
         card.setRatio(val / 100.0);
+        viewer.update = true;
       }
     </script>
   </body>
