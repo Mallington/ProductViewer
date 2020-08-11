@@ -112,3 +112,20 @@ function loadGLTF(location, scene) {
         }
     );
 }
+
+function markVertices(object, draw) {
+    if (object.type == "Mesh") {
+        for (var vert in object.geometry.vertices) {
+            var p = object.geometry.vertices[vert];
+            var marker = draw();
+            marker.position.set(p.x, p.y, p.z);
+            object.add(marker);
+        }
+    }
+    else if (object.type == "Group") {
+        object.children.forEach((child) => markVertices(child));
+    }
+    else {
+        throw "Unsupported object type: " + object.type;
+    }
+}
